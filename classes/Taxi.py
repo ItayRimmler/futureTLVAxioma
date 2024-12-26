@@ -31,7 +31,7 @@ class Taxi:
         self.end_y = None
         self.remaining = constant.RIDE_TIME * constant.VELOCITY
 
-    def calc_location(self, x, y, start=False, end=False, remainder=False):
+    def calc_location(self, x, y, start=False, end=False):
         """
         Calculates the location the taxi would be in, assuming it goes towards x and y, and the previously documented location is self.x and self.y:\n
         :param x: The destination X coordinate.\n
@@ -46,22 +46,32 @@ class Taxi:
             x = self.x
         left_x = abs(self.x - x)
         left_y = abs(self.y - y)
-        dist = constant.RIDE_TIME * constant.VELOCITY * int(not remainder) + self.remaining * int(remainder)
-        if dist > left_x + left_y:
-            self.x = x
-            self.y = y
-            self.state = False
+        self.state = True
+        if self.remaining >= left_x + left_y:
+            self.remaining -= left_x + left_y
+            self.x, self.y = x, y
             if start:
                 self.start_x, self.start_y = None, None
             elif end:
                 self.end_x, self.end_y = None, None
-            self.remaining = dist - left_x - left_y
-        elif dist > left_x:
+            return
+        elif self.remaining > left_x > 0:
+            self.remaining -= left_x
             self.x = x
-            self.y = left_y - int(self.y > y) * (dist - left_x) + int(self.y < y) * (dist - left_x)
-            self.state = True
-            self.remaining =  0
-        else:
-            self.x = left_x - int(self.x > x) * dist + int(self.x < x) * dist
-            self.state = True
+            if start:
+                self.start_x = None
+            elif end:
+                self.end_x = None
+        elif left_x > 0:
+            self.x += self.remaining * int(self.x < x) - self.remaining * int(self.x > x)
+            self.remaining = 0
+        if self.remaining > left_y > 0:
+            self.remaining -= left_y
+            self.y = y
+            if start:
+                self.start_y = None
+            elif end:
+                self.end_y = None
+        elif left_y > 0:
+            self.y += self.remaining * int(self.y < y) - self.remaining * int(self.y > y)
             self.remaining = 0

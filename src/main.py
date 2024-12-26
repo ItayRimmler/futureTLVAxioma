@@ -28,3 +28,4 @@ while True:
     control(taxis, kyu)
     log(taxis, i, kyu)
     time.sleep(20)
+    i += 1

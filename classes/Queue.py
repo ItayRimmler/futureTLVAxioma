@@ -37,6 +37,14 @@ class Queue:
             return None
         return self.q.popleft()  # Remove from the front
 
+    def p(self):
+        """
+        peek.\n
+        """
+        if self.i():
+            return None
+        return self.q[0]  # View the front item without removing it
+
     def i(self):
         """
         is_empty.\n
