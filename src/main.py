@@ -16,6 +16,7 @@ from classes.Queue import Queue
 from log import *
 from control import control
 from customer_functions.customer_request import customer_request
+
 taxis = []
 for i in range(10):
     globals()[f'taxi{i+1}'] = Taxi(i+1)
