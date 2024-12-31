@@ -17,16 +17,20 @@ from log import *
 from control import control
 from customer_functions.customer_request import customer_request
 
-taxis = []
-for i in range(10):
-    globals()[f'taxi{i+1}'] = Taxi(i+1)
-    taxis.append(globals()[f'taxi{i+1}'])
-first_log(taxis)
-i = 1
-kyu = Queue()
-while True:
-    kyu.e(customer_request())
-    control(taxis, kyu)
-    log(taxis, i, kyu)
-    time.sleep(20)
-    i += 1
+def main():
+    taxis = []
+    for i in range(10):
+        globals()[f'taxi{i+1}'] = Taxi(i+1)
+        taxis.append(globals()[f'taxi{i+1}'])
+    first_log(taxis)
+    i = 1
+    kyu = Queue()
+    while True:
+        kyu.e(customer_request())
+        control(taxis, kyu)
+        log(taxis, i, kyu)
+        time.sleep(20)
+        i += 1
+
+if __name__ == "__main__":
+    main()

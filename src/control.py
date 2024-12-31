@@ -60,7 +60,7 @@ def control(taxis, kyu):
         # b.
         if taxi.state:
             # 1.b.1
-            if taxi.start_x or taxi.start_y:
+            if not taxi.start_x is None or not taxi.start_y is None:
                 ex = taxi.start_x
                 wai = taxi.start_y
             else:
@@ -113,9 +113,9 @@ def control(taxis, kyu):
         closest.start_x, closest.start_y, closest.end_x, closest.end_y = customer[0], customer[1], customer[2], customer[3]
         closest.calc_location(closest.start_x, closest.start_y, start=True)
         closest.calc_location(closest.end_x, closest.end_y, end=True)
-        # SHOULD'VE BEEN ADDED!! WITHOUT IT, IF THE TAXI FINISHED THE RIDE WITH FUEL REMAINING, AND THE QUEUE IS NOT EMPTY, IT WON'T ATTEMPT TO GO TO THE NEXT CUSTOMER
-        # if closest.end_y is None:
-        #     closest.state = False
+        if closest.end_y is None:
+            closest.state = False
+
 # Helper functions
 
 def calc_distance(taxi, customer):
